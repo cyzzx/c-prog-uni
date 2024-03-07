@@ -61,10 +61,10 @@ int main()
 
     printf("Enter the number of rows of the first matrix: ");
     scanf("%d", &r1);
-    printf("Enter the number of columns of the second matrix: ");
+    printf("Enter the number of columns of the first matrix: ");
     scanf("%d", &c1);
     readMatrix(r1, c1, matrixA);
-    printf("Enter the number of rows of the first matrix: ");
+    printf("Enter the number of rows of the second matrix: ");
     scanf("%d", &r2);
     printf("Enter the number of columns of the second matrix: ");
     scanf("%d", &c2);
