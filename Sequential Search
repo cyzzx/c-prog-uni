@@ -6,7 +6,7 @@ int seqSearch(int data[], int n, int key)
     int found = 0;
     int pos;
   
-    for(pos=0; (pos<n) && (!found) ;pos++)
+    for(pos  =0; (pos < n) && (!found) ;pos++)
     {
         if(data[pos]==key)
           found=1;
@@ -36,5 +36,5 @@ int seqSearch(int x[], int n, int value)
 int main()
 {
 
-return 0;
+    return 0;
 }
