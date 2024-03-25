@@ -1,7 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-int seqSearch(int data[], int n, int key)
+int sequentialSearch(int data[], int n, int key)
 {
     int found = 0;
     int pos;
