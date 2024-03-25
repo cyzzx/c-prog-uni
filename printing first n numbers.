@@ -1,0 +1,23 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <math.h>
+
+int naturalrec(int n)
+{
+    if (n == 0)
+    {
+        return 0;
+    }
+
+    naturalrec(n-1);
+    printf("%d ", n);
+}
+
+
+int main()
+{
+    int n;
+    scanf("%d", &n);
+
+    naturalrec(n);
+}
