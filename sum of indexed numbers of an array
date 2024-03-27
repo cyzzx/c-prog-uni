@@ -1,0 +1,41 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void readArray(int arr[], int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+}
+
+int findSum(int arr[], int a, int b)
+{
+   if (b == a)
+        return arr[b];
+
+   return arr[b] + findSum(arr, a, b-1);
+
+}
+
+
+int main()
+{
+    int n;
+    int a, b;
+    scanf("%d%d%d", &n, &a, &b);
+
+    int arr[1000];
+    readArray(arr, n);
+
+    int res = findSum(arr, a-1, b-1);
+    printf("%d\n", res);
+
+    for(int i = a-1; i < b; i++)
+    {
+        printf("%d ", arr[i]);
+    }
+
+
+    return 0;
+}
