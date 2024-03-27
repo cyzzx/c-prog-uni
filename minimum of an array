@@ -1,0 +1,39 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void readArray(int arr[], int n)
+{
+    for (int i = 0; i < n; i++)
+    {
+        scanf("%d", &arr[i]);
+    }
+}
+
+int findMin(int a, int b)
+{
+    if (a > b)
+        return b;
+    else
+        return a;
+}
+
+int seriesMin(int arr[], int n)
+{
+    if (n == 0)
+        return arr[0];
+
+    return findMin(arr[n], seriesMin(arr, n-1));
+
+}
+
+
+int main()
+{
+    int arr[10];
+    readArray(arr, 10);
+
+    int res = seriesMin(arr, 10);
+    printf("%d", res);
+
+    return 0;
+}
