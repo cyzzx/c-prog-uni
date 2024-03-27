@@ -6,7 +6,7 @@ int fibonacci(int n)
     //shows the n-th number of the Fibonacci sequence.
     if(n == 0)
     {
-        return 0;
+        return 1;
     }
 
     if(n == 1)
@@ -22,7 +22,7 @@ int fibonacci(int n)
 int main()
 {
     int n;
-    printf("Enter the number:3 ");
+    printf("Enter the number: ");
     scanf("%d", &n);
 
     int result = fibonacci(n);
