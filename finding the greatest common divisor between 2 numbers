@@ -1,0 +1,27 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int GCD(int n, int m)
+{
+    while(n!=m)
+    {
+        if (n > m)
+            return GCD(n-m, m);
+        else
+            return GCD(n, m-n);
+    }
+
+    return n;
+
+}
+
+int main()
+{
+    int n, m;
+    scanf("%d %d", &n, &m);
+
+    int res = GCD(n, m);
+    printf("%d", res);
+
+    return 0;
+}
