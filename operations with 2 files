@@ -1,0 +1,95 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+/*
+
+To use the program, create a file named input in the same folder and store the data in this format
+nrOfrows nrOfCols
+nrOfrows*nrOfCols numbers
+
+*/
+
+int main()
+{
+    //step 1
+    //declare two pointers that can point to files
+    FILE *firstFile=NULL;
+    FILE *secondFile=NULL;
+
+    //step 2
+    //open the file by specifing the path (relative/absolute)
+    //and the mode (r, w, a, r+, a+, w+)
+    firstFile = fopen("input.txt", "r");
+    secondFile = fopen("output.txt", "w");
+
+
+    //step 3
+    //check if file is opened, if not terminate
+    if(firstFile==NULL)
+    {
+        puts("Cannot open file 1");
+        exit(1); //return 1;
+    }
+
+    if(secondFile==NULL)
+    {
+        printf("Cannot open file 2.");
+        exit(2);
+    }
+
+    //number of rows and columns for the first file
+    int cols1, rows1;
+    int n; //number of rows for the new entry
+    fscanf(firstFile, "%d%d", &rows1, &cols1);
+
+    //or puts
+    printf("Enter the number of rows for the new numbers: ");
+    scanf("%d", &n); //read from keyboard
+
+    printf("Enter %d rows and %d numbers for each row:\n", n, cols1);
+
+    int arr[n*cols1];
+    //read the numbers and store them in a 1D array
+    for(int i=0; i<n*cols1; i++)
+    {
+        scanf("%d", &arr[i]); //read from keyboard
+    }
+
+    puts("The data is stored in the array, now its time to store it in the file.");
+
+    fprintf(secondFile, "%d %d\n", rows1+n, cols1);
+
+    for(int i=0; i<n*cols1; i++)
+    {
+        fprintf(secondFile, "%d ", arr[i]); //print the data from the array to the file
+        //so the data is stored in a 2D array form.
+        if((i+1)%cols1==0)
+            fprintf(secondFile, "\n");
+    }
+
+    puts("The array is stored in the second file.");
+
+    int temp;
+    for(int i=0; i<cols1*rows1; i++)
+    {
+        //read data from file 1
+        fscanf(firstFile, "%d", &temp);
+        //print it in file 2
+        fprintf(secondFile, "%d ", temp);
+        //same as before
+        if((i+1)%cols1==0)
+            fprintf(secondFile, "\n");
+    }
+
+    puts("Second file has the data stored in the first file.");
+
+
+    //step 4
+    fclose(firstFile);
+    fclose(secondFile);
+
+    puts("Terminated.");
+
+    return 0;
+}
