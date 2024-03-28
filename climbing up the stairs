@@ -1,0 +1,86 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+void sort(int arr[][200], int r, int c)
+{
+    for(int i = 0; i < r; i++)
+    {
+        for(int j = 0; j < c - 1; j++)
+        {
+            for(int k = 0; k < c - j - 1; k++)
+            {
+                if (arr[i][k] > arr[i][k+1])
+                {
+                    int temp = arr[i][k];
+                    arr[i][k] = arr[i][k+1];
+                    arr[i][k+1] = temp;
+                }
+            }
+        }
+    }
+}
+
+int nrOfStairs(int arr[][200], int r, int c)
+{
+    sort(arr, r, c);
+    int floorcnt = 0;
+
+    for(int i = 0; i < r; i++)
+    {
+        for(int j = 0; j < c; j++)
+        {
+            if(arr[i][j+1] - arr[i][j] == 1 || arr[i][j+1] - arr[i][j] == 2)
+            {
+                floorcnt += (arr[i][j+1] - arr[i][j]);
+            }
+        }
+    }
+
+    return floorcnt;
+}
+
+
+int getData(int arr[][200])
+{
+
+    int num, row = 0, col;
+
+    while(1)
+    {
+
+        col = 0;
+
+        while(1)
+        {
+            scanf("%d", &num);
+            if(num < 0)
+            {
+                if(col == 0)
+                { // If the first number is negative, end the scanning
+                    return row;
+                }
+                else
+                { // Negative number ends the current row
+                    break;
+                }
+            }
+            arr[row][col] = num;
+            col++;
+        }
+        row++;
+    }
+    return row;
+}
+
+
+
+int main()
+{
+    int arr[100][200];
+
+    int res = getData(arr);
+
+    printf("%d", nrOfStairs(arr, res, 200));
+
+    return 0;
+}
