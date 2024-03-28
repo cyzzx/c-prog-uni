@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NUMBER_OF_NAMES 100
+#define MAX_LENGTH_OF_NAMES 16
+
+void getData(int n, int studentID[], char names[][16], char surnames[][16], char department[][5], int grade[])
+{
+    for(int i = 0; i < n; i++)
+    {
+     scanf("%d", &studentID[i]);
+     scanf("%s", names[i]);
+     scanf("%s", surnames[i]);
+     scanf("%s", department[i]);
+     scanf("%d", &grade[i]);
+    }
+}
+
+void searchStudent(int n, int studentID[], char names[][16], char surnames[][16], char department[][5], int grade[])
+{
+    char name[16];
+    char s[16];
+
+    scanf("%s", name);
+    scanf("%s", s);
+
+    for(int i = 0; i < n; i++)
+    {
+        if (strcmp(name, names[i]) == 0 && strcmp(s, surnames[i]) == 0)
+        {
+            printf("%s ", name);
+            printf("%s\n", s);
+            printf("%d ", studentID[i]);
+            printf("%s ", department[i]);
+            printf("%d", grade[i]);
+        }
+    }
+}
+
+int main()
+{
+    char names[MAX_NUMBER_OF_NAMES][MAX_LENGTH_OF_NAMES];
+    char surnames[MAX_NUMBER_OF_NAMES][MAX_LENGTH_OF_NAMES];
+
+    int studentID[100][1000];
+    char department[100][5];
+    int grade[100];
+
+    int n;
+    scanf("%d", &n);
+
+    getData(n, studentID, names, surnames, department, grade);
+    searchStudent(n, studentID, names, surnames, department, grade);
+
+
+    return 0;
+}
