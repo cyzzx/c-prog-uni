@@ -32,6 +32,9 @@ int main()
     }
 
     copyContentToFile(source, destination);
+    
+    fclose(source);
+    fclose(destination);
 
     return 0;
 }
