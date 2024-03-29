@@ -13,18 +13,18 @@ int main()
         exit(1);
     }
 
-    int n;
+    int n, j;
     scanf("%d", &n);
 
-    for(int i = 1; i <= n; i++)
+    for(int i = 0; i < n; i++)
     {
-        printf("%d ", i);
-        fprintf(file1, "%d ", i);
+        scanf("%d", &j);
+        fprintf(file1, "%d ", j);
     }
 
     fclose(file1);
 
-    printf("\nText written to file successfully.");
+    printf("Text written to file successfully.");
     return 0;
 
 }
