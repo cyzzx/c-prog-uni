@@ -1,0 +1,151 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_LENGTH 25
+
+
+void findStudentByNameAndSurname(FILE *file, char name[], char surname[])
+{
+    if (file == NULL)
+    {
+        printf("Error opening file...");
+        exit(1);
+    }
+
+    else
+    {
+        int n;
+        fscanf(file, "%d", &n);
+        int id, grade;
+        char studentName[MAX_LENGTH], studentSurname[MAX_LENGTH], department[MAX_LENGTH];
+
+
+        for(int i = 0; i < n; i++)
+        {
+            fscanf(file, "%d %s %s %s %d", &id, studentName, studentSurname, department, &grade);
+            if(strcmp(studentName, name) == 0 && strcmp(studentSurname, surname) == 0)
+            {
+                printf("Student found successfully...");
+                printf("ID: %d, Name: %s, Surname: %s, Department: %s, Grade: %d ", id, studentName, studentSurname, department, grade);
+                return;
+            }
+
+        }
+
+        printf("Student not found...");
+    }
+}
+
+void findStudentsByDepartment(FILE *file, char department[], int grade)
+{
+    if (file == NULL)
+    {
+        printf("Error opening file...");
+        exit(1);
+    }
+
+    else
+    {
+        int n;
+        fscanf(file, "%d", &n);
+        int id, studentGrade;
+        printf("The students in department %s with grades greater than %d are: \n", department, grade);
+        char studentName[MAX_LENGTH], studentSurname[MAX_LENGTH], studentDepartment[MAX_LENGTH];
+
+
+        for(int i = 0; i < n; i++)
+        {
+            fscanf(file, "%d %s %s %s %d", &id, studentName, studentSurname, studentDepartment, &studentGrade);
+            if (strcmp(studentDepartment, department == 0) && studentGrade > grade)
+            {
+                printf("%d %s %s %s %d\n", id, studentName, studentSurname, studentDepartment, studentGrade);
+            }
+
+        }
+
+
+    }
+}
+
+void findTopStudentsByDepartment(FILE *file, char department[], int M)
+{
+    if (file == NULL)
+    {
+        printf("Error opening file...");
+        exit(1);
+    }
+
+    else
+    {
+        int n;
+        fscanf(file, "%d", &n);
+        int id, studentGrade;
+        char studentName[MAX_LENGTH], studentSurname[MAX_LENGTH], studentDepartment[MAX_LENGTH];
+        int topStudents[M]; //Grades of top M students
+
+        for(int i  = 0; i < M; i++)
+        {
+            topStudents[i] = 0;
+        }
+
+         for (int i=0; i<n; i++)
+        {
+            fscanf(file, "%d %s %s %s %d", &id, studentName, studentSurname, studentDepartment, &studentGrade);
+            if (strcmp(studentDepartment, department) ==0)
+            {
+                for (int j=0; j<M; j++)
+                 {
+                    if (studentGrade > topStudents[j])
+                     {
+                            //shift grade to reserve space for new top grade
+                        for (int k=M-1; k>j; k--)
+                        {
+                            topStudents[k] = topStudents[k-1];
+                        }
+                        //insert the top grade
+                        topStudents[j] = studentGrade;
+                        break;
+                    }
+                }
+            }
+        }
+    }
+}
+
+int main()
+{
+    FILE *myFile;
+    myFile = open("data1.txt", "r");
+
+    if (myFile == NULL)
+    {
+        printf("Error opening file...");
+        exit(1);
+    }
+
+    else
+    {
+        char nameToSearch[] = "name23";
+        char surnameToSearch[] = "surname23";
+        char dept[] = "CEN";
+        int grade = 85;
+        int topMStudents = 5;
+
+        findStudentByNameAndSurname(myFile, nameToSearch, surnameToSearch);
+        rewind(myFile); //reset the pointer back to starting point of the page
+        printf("\n\n");
+
+        findStudentsByDepartment(myFile, dept, grade);
+        rewind(myFile);
+        printf("\n\n");
+
+        findTopStudentsByDepartment(myFile, dept, topMStudents);
+        fclose(myFile);
+
+
+    }
+
+    return 0;
+
+}
