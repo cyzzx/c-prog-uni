@@ -57,7 +57,7 @@ void findStudentsByDepartment(FILE *file, char department[], int grade)
         for(int i = 0; i < n; i++)
         {
             fscanf(file, "%d %s %s %s %d", &id, studentName, studentSurname, studentDepartment, &studentGrade);
-            if (strcmp(studentDepartment, department == 0) && studentGrade > grade)
+            if (strcmp(studentDepartment, department) == 0 && studentGrade > grade)
             {
                 printf("%d %s %s %s %d\n", id, studentName, studentSurname, studentDepartment, studentGrade);
             }
@@ -116,7 +116,7 @@ void findTopStudentsByDepartment(FILE *file, char department[], int M)
 int main()
 {
     FILE *myFile;
-    myFile = open("data1.txt", "r");
+    myFile = fopen("data1.txt", "r");
 
     if (myFile == NULL)
     {
