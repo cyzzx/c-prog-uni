@@ -1,0 +1,37 @@
+#include <stdio.h>
+#include <stdlib.h>
+#define MAX_LENGTH 20
+
+void copyContentToFile(FILE *source, FILE *destination)
+{
+    char character;
+
+    while((character = fgetc(source)) != EOF)
+    {
+        fputc(character, destination);
+    }
+}
+
+int main()
+{
+    FILE *source, *destination;
+    char topic[MAX_LENGTH];
+    source  = fopen("source.txt", "r");
+    destination = fopen("destination.txt", "w");
+
+    if (source == NULL)
+    {
+        printf("cannot open file...");
+        exit(1);
+    }
+
+    if (destination == NULL)
+    {
+        printf("cannot open file...");
+        exit(1);
+    }
+
+    copyContentToFile(source, destination);
+
+    return 0;
+}
