@@ -1,0 +1,30 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    FILE *file1 = NULL;
+
+    file1 = fopen("input.txt", "w");
+
+    if (file1 == NULL)
+    {
+        puts("Cannot open file!");
+        exit(1);
+    }
+
+    int n;
+    scanf("%d", &n);
+
+    for(int i = 1; i <= n; i++)
+    {
+        printf("%d ", i);
+        fprintf(file1, "%d ", i);
+    }
+
+    fclose(file1);
+
+    printf("\nText written to file successfully.");
+    return 0;
+
+}
