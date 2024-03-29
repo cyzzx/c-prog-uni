@@ -1,0 +1,24 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int main()
+{
+    FILE *file1 = NULL;
+
+    file1 = fopen("input.txt", "w");
+
+    if (file1 == NULL)
+    {
+        puts("Cannot open file!");
+        exit(1);
+    }
+
+    char*s = ("Hello, I am NameSurname. I am a CEN/SWE Engineering first/second year student");
+
+    fprintf(file1, "%s", s);
+    fclose(file1);
+
+    printf("Text written to file successfully.");
+    return 0;
+
+}
