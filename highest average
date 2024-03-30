@@ -1,0 +1,109 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NUMBER_OF_STUDENTS 100
+#define MAX_LENGTH_OF_NAMES 50
+
+
+void getData(int n, char names[][MAX_LENGTH_OF_NAMES], char surnames[][MAX_LENGTH_OF_NAMES], int grades[][6]) {
+    for (int i = 0; i < n; i++) {
+        printf("Enter name and surname for student %d: ", i + 1);
+        scanf("%s %s", names[i], surnames[i]);
+
+        printf("Enter grades for student %d (up to 6 grades, -1 to end): ", i + 1);
+        for (int j = 0; j < 6; j++) {
+            scanf("%d", &grades[i][j]);
+            if (grades[i][j] == -1)
+                break;
+        }
+    }
+}
+
+void getAvg(int n, int grades[][6], double averages[]) {
+    for (int i = 0; i < n; i++) {
+        int total = 0;
+        int count = 0;
+        for (int j = 0; j < 6; j++) {
+            if (grades[i][j] == -1)
+                break;
+            total += grades[i][j];
+            count++;
+        }
+        averages[i] = (double) total / (count >= 4 ? count : 4);
+    }
+}
+
+int getMax(int n, double averages[]) {
+    int maxIndex = 0;
+    for (int i = 1; i < n; i++) {
+        if (averages[i] > averages[maxIndex])
+            maxIndex = i;
+    }
+    return maxIndex;
+}
+
+void sortData(int n, char names[][MAX_LENGTH_OF_NAMES], char surnames[][MAX_LENGTH_OF_NAMES], int grades[][6], double averages[]) {
+    // Bubble sort based on average grades
+    for (int i = 0; i < n - 1; i++) {
+        for (int j = 0; j < n - i - 1; j++) {
+            if (averages[j] < averages[j + 1]) {
+                swapN(names, j, j + 1);
+                swapS(surnames, j, j + 1);
+                swapG(grades, j, j + 1);
+                double temp = averages[j];
+                averages[j] = averages[j + 1];
+                averages[j + 1] = temp;
+            }
+        }
+    }
+}
+
+void swapN(char names[][MAX_LENGTH_OF_NAMES], int i, int j) {
+    char temp[MAX_LENGTH_OF_NAMES];
+    strcpy(temp, names[i]);
+    strcpy(names[i], names[j]);
+    strcpy(names[j], temp);
+}
+
+void swapS(char surnames[][MAX_LENGTH_OF_NAMES], int i, int j) {
+    char temp[MAX_LENGTH_OF_NAMES];
+    strcpy(temp, surnames[i]);
+    strcpy(surnames[i], surnames[j]);
+    strcpy(surnames[j], temp);
+}
+
+void swapG(int grades[][6], int i, int j) {
+    for (int k = 0; k < 6; k++) {
+        int temp = grades[i][k];
+        grades[i][k] = grades[j][k];
+        grades[j][k] = temp;
+    }
+}
+
+int main() {
+    char names[MAX_NUMBER_OF_STUDENTS][MAX_LENGTH_OF_NAMES];
+    char surnames[MAX_NUMBER_OF_STUDENTS][MAX_LENGTH_OF_NAMES];
+    int grades[MAX_NUMBER_OF_STUDENTS][6];
+    double averages[MAX_NUMBER_OF_STUDENTS];
+    int n;
+
+    // Input number of students
+    printf("Enter the number of students: ");
+    scanf("%d", &n);
+
+    // Read data for students
+    getData(n, names, surnames, grades);
+
+    // Calculate average grades for each student
+    getAvg(n, grades, averages);
+
+    // Sort the student data based on average grades
+    sortData(n, names, surnames, grades, averages);
+
+    // Find and display the student with the highest average grade
+    int maxIndex = getMax(n, averages);
+    printf("Student with the highest average grade: %s %s %.2lf\n", names[maxIndex], surnames[maxIndex], averages[maxIndex]);
+
+    return 0;
+}
