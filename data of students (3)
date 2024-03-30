@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NUMBER_OF_NAMES 100
+#define MAX_LENGTH_OF_NAMES 16
+
+void getData(int n, int studentID[], char names[][16], char surnames[][16], char department[][5], int grade[])
+{
+    for(int i = 0; i < n; i++)
+    {
+     scanf("%d", &studentID[i]);
+     scanf("%s", names[i]);
+     scanf("%s", surnames[i]);
+     scanf("%s", department[i]);
+     scanf("%d", &grade[i]);
+    }
+}
+
+
+void searchClass(int n, int m, char C[], int studentID[], char names[][16], char surnames[][16], char department[][5], int grade[])
+{
+    int topStudents[MAX_NUMBER_OF_NAMES]; // Array to store top student indices for each department
+
+    // Initialize topStudents array to -1
+    for(int i = 0; i < MAX_NUMBER_OF_NAMES; i++)
+    {
+        topStudents[i] = -1;
+    }
+
+    // Search for top students in the specified department
+    for(int i = 0; i < n; i++)
+    {
+        if (strcmp(C, department[i]) == 0)
+        {
+            for (int j = 0; j < m; j++)
+            {
+                if (topStudents[j] == -1 || grade[i] > grade[topStudents[j]])
+                {
+                    // Shift lower grades to make room for the new top grade
+                    for (int k = m - 1; k > j; k--)
+                    {
+                        topStudents[k] = topStudents[k - 1];
+                    }
+
+                    topStudents[j] = i; // Store the index of the top student
+                    break;
+                }
+            }
+        }
+    }
+
+    // Print the information of the top students in the specified department
+    printf("\n");
+    printf("Top %d students in department %s:\n", m, C);
+    for (int i = 0; i < m; i++)
+    {
+        int index = topStudents[i];
+        printf("%d %s %s %s %d\n", studentID[index], names[index], surnames[index], department[index], grade[index]);
+    }
+}
+
+
+int main()
+{
+    char names[MAX_NUMBER_OF_NAMES][MAX_LENGTH_OF_NAMES];
+    char surnames[MAX_NUMBER_OF_NAMES][MAX_LENGTH_OF_NAMES];
+
+    int studentID[100];
+    char department[100][5];
+    int grade[100];
+
+    int n, m;
+    scanf("%d", &n);
+
+    scanf("%d", &m);
+
+    char Class[5];
+    scanf("%s", Class);
+
+
+    getData(n, studentID, names, surnames, department, grade);
+    searchClass(n, m, Class, studentID, names, surnames, department, grade);
+
+
+    return 0;
+}
