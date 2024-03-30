@@ -1,0 +1,101 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+#define MAX_NUMBER_OF_NAMES 100
+#define MAX_LENGTH_OF_NAMES 16
+
+void calculateAvg(int n, int grades[][100], int counter[], double averages[])
+{
+    int sum[100];
+    
+    for(int i = 0; i < n; i++)
+    {
+        for(int j  = 0; j < counter[i]; j++)
+        {
+            sum[i] += grades[i][j];
+        }
+    }
+
+
+    for (int i = 0; i < n; i++)
+     {
+        if (counter[i] < 4)
+        {
+            averages[i] = (double) sum[i] / 4 ;
+        }
+
+        else
+
+            averages[i] = (double) sum[i] / counter[i];
+      }
+}
+
+void getData(int n, char name[][16], char surname[][16], int grades[][100], int counter[])
+{
+
+    for(int i = 0; i < n; i++)
+    {
+        int cnt = 0;
+        scanf("%s", name[i]);
+        scanf("%s", surname[i]);
+
+        int j = 0;
+         while(1)
+         {
+            scanf("%d", &grades[i][j]);
+
+            if(grades[i][j] == -1)
+            {
+                break;
+            }
+
+            cnt++;
+            j++;
+         }
+
+     counter[i] = cnt;
+    }
+
+}
+
+void findMaxAvg(int n, double averages[], char names[][16], char surnames[][16])
+{
+    double maxavg = averages[0];
+    char maxname[MAX_LENGTH_OF_NAMES];
+    char maxsurname[MAX_LENGTH_OF_NAMES];
+
+    for (int i = 1; i < n; i++)
+    {
+        if (averages[i] > maxavg)
+        {
+            maxavg  = averages[i];
+            strcpy(maxname, names[i]);
+            strcpy(maxsurname, surnames[i]);
+        }
+    }
+
+    printf("%s %s %.2lf", maxname, maxsurname, maxavg);
+}
+
+
+
+int main()
+{
+    char names[MAX_NUMBER_OF_NAMES][MAX_LENGTH_OF_NAMES];
+    char surnames[MAX_NUMBER_OF_NAMES][MAX_LENGTH_OF_NAMES];
+    int grades[100][100];
+    int counter[100];
+    double averages[100];
+
+    int n;
+    scanf("%d", &n);
+
+    getData(n, names, surnames, grades, counter);
+    calculateAvg(n, grades, counter, averages);
+    findMaxAvg(n, averages, names, surnames);
+
+
+
+    return 0;
+}
