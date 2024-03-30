@@ -1,0 +1,61 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int factorial(int n)
+{
+    if(n == 0)
+    {
+        return 1;
+    }
+
+    return n * factorial(n-1);
+}
+
+
+int saveFactorialToFile(FILE *myFile, int n)
+{
+    int counter = 0;
+
+    for(int i = 1; i <= n; i++)
+    {
+        int f = 0;
+
+        if (i % 2 == 0)
+        {
+            f = factorial(i);
+            
+            counter++;
+
+            fprintf(myFile, "The factorial of %d is: %d\n", i, f);
+        }
+         
+    }
+
+    return counter;
+}
+
+
+int main()
+{
+    FILE *myFile = NULL;
+    myFile = fopen("data1.txt", "w");
+
+    if (myFile == NULL)
+    {
+       puts("Error opening file...");
+       exit(1); 
+    }
+
+    else
+    {
+        int n;
+        printf("Enter a number: ");
+        scanf("%d", &n);
+
+        int cnt = saveFactorialToFile(myFile, n);
+        printf("Factorials of even numbers calculated and saved to 'data1.txt'. \n");
+        printf("Number of even numbers for which factorial was calculated: %d", cnt);
+    }
+
+    return 0;
+}
