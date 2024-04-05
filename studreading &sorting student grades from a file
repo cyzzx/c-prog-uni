@@ -1,0 +1,119 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Student
+{
+    int id;
+    char name[20];
+    char surname[20];
+    int grades[100];
+    float avg;
+};
+
+void readData(int n, int m, struct Student students[], FILE *fp)
+{
+     int sum;
+     for(int i=0; i<n; i++)
+    {
+        sum=0;
+        fscanf(fp, "%d", &students[i].id);
+        fscanf(fp, "%s", students[i].name);
+        fscanf(fp, "%s", students[i].surname);
+        for(int j=0; j<m; j++)
+        {
+             fscanf(fp, "%d", &students[i].grades[j]);
+             sum+=students[i].grades[j];
+        }
+        students[i].avg=(float)sum/m;
+    }
+}
+
+void printData(int n, int m, struct Student students[])
+{
+     printf("\nThe data stored in the array: ");
+    for(int i=0; i<n; i++)
+    {
+        printf("\n%d %s %s ", students[i].id, students[i].name, students[i].surname);
+        for(int j=0; j<m; j++)
+        {
+            printf("%d ", students[i].grades[j]);
+        }
+
+        printf("\tAvg: %f", students[i].avg);
+    }
+
+}
+
+void swap( struct Student arr[], int i, int j)
+{
+    //we can copy all the content of one structure var
+    //to another one by using = operator
+    //*but we cannot compare them!
+    struct Student temp = arr[i];
+    arr[i]=arr[j];
+    arr[j]=temp;
+}
+
+void selSort(int n, int m, struct Student students[])
+{
+    for(int i=0; i<n-1; i++)
+    {
+        for(int j=1+i; j<n; j++)
+        {
+            //sorting based on the average only
+            if(students[i].avg > students[j].avg)
+            {
+                swap(students, i, j);
+            }
+        }
+    }
+}
+
+int main()
+{
+    //The data is read from the file
+    //the structure of the data stored in file it this:
+    /*
+        5 3
+        12 Name1 Surname1 100 80 60
+        13 Name2 Surname2 10 80 60
+        14 Name3 Surname3 100 8 60
+        15 Name4 Surname4 100 80 6
+        16 Name5 Surname5 10 8 60
+    */
+    FILE *fp;
+    fp=fopen("input.txt", "r");
+    if(fp==NULL)
+    {
+        puts("Cannot open file!");
+        exit(1);
+    }
+
+
+    int nrOfSt, nrOfGr;
+    fscanf(fp, "%d%d", &nrOfSt, &nrOfGr);
+
+    //in each index of the array is a structure
+    struct Student students[nrOfSt];
+
+    //read data from the file and store it in the array
+    readData(nrOfSt, nrOfGr, students, fp);
+
+    //after storing the data in the array, the file is not needed anymore
+    fclose(fp);
+
+    //print the data on the screen to make sure that it is
+    //saved successfully
+    printData(nrOfSt, nrOfGr, students);
+
+    //sort the array (asc or desc)
+    selSort(nrOfSt, nrOfGr, students);
+
+    puts("\n\nSORTED!");
+    //print on the screen the sorted array
+    printData(nrOfSt, nrOfGr, students);
+
+
+
+    return 0;
+}
