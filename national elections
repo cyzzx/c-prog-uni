@@ -1,0 +1,77 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Voter
+{
+    char name[12];
+    char surname[12];
+    int pin;
+};
+
+
+int readData(FILE *myFile, struct Voter y[], int n, int m)
+{
+    for(int i = 0; i < n; i++)
+    {
+        fscanf(myFile, "%s %s", y[i].name, y[i].surname);
+        fscanf(myFile, "%d", &y[i].pin);
+    }
+
+    fscanf(myFile, "%d", &m);
+
+    for(int j = 0; j < m; j++)
+    {
+        fscanf(myFile, "%s %s", y[j+n].name, y[j+n].surname);
+        fscanf(myFile, "%d", &y[j+n].pin);
+    }
+
+    return m;
+}
+
+void sort(struct Voter y[], int size)
+{
+    for(int i = 0; i < size-1; i++)
+     {
+         for(int j = i+1; j < size; j++)
+        {
+         if (y[i].pin > y[j].pin)
+            {
+                struct Voter temp = y[i];
+                y[i] = y[j];
+                y[j] = temp;
+            }
+        }
+     }
+}
+
+void printKthVoter(struct Voter y[], int k)
+{
+    printf("%s %s %d\n", y[k].name, y[k].surname, y[k].pin);
+}
+
+int main()
+{
+    FILE *myFile = NULL;
+    myFile = fopen("data1.txt", "r");
+
+    if (myFile == NULL)
+    {
+       puts("Error opening file...");
+       exit(1); 
+    }
+
+    int n, m, M;
+    int k;
+
+    fscanf(myFile, "%d %d", &n, &k);
+    struct Voter y[1000];
+
+    
+    M = readData(myFile, y, n, m);
+    sort(y, n+M);
+    printKthVoter(y, k);
+
+    fclose(myFile);
+
+    return 0;
+}
