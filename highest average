@@ -1,0 +1,99 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Student
+{
+    char name[20];
+    char surname[20];
+    int grades[6];
+    int numberOfExams;
+    double average;
+};
+
+void readData(int n, struct Student y[], FILE *fp)
+{
+    int j, sum, cnt;
+    for(int i = 0; i < n; i++)
+    {
+        fscanf(fp, "%s", y[i].name);
+        fscanf(fp, "%s", y[i].surname);
+
+        cnt = 0;
+        j = 0;
+        sum = 0;
+        while(1)
+        {
+            fscanf(fp, "%d", &y[i].grades[j]);
+
+            if(y[i].grades[j] == -1)
+            {
+                break;
+            }
+
+            cnt++;
+            sum += y[i].grades[j];
+            j++;
+        }
+
+        y[i].numberOfExams = cnt;
+
+        if(y[i].numberOfExams < 4)
+        {
+            y[i].average = (double) sum / 4;
+
+        }
+        else if(y[i].numberOfExams > 4 || y[i].numberOfExams == 4)
+        {
+            y[i].average = (double) sum / y[i].numberOfExams;
+        }
+
+
+    }
+
+}
+
+void findMax(int n, struct Student y[])
+{
+    double max = y[0].average;
+    char maxname[20];
+    char maxsurname[20];
+
+
+    for(int i = 1; i < n; i++)
+    {
+        if(y[i].average > max)
+        {
+            max = y[i].average;
+            strcpy(maxname, y[i].name);
+            strcpy(maxsurname, y[i].surname);
+        }
+    }
+
+    printf("%s %s %.2lf", maxname, maxsurname, max);
+
+}
+
+
+int main()
+{
+    FILE *fp;
+    fp = fopen("data.txt", "r");
+    if(fp == NULL)
+    {
+        puts("Cannot open file!");
+        exit(1);
+    }
+
+    int n;
+    fscanf(fp, "%d", &n);
+
+    struct Student y[n];
+    readData(n, y, fp);
+    findMax(n, y);
+
+
+    fclose(fp);
+    return 0;
+
+}
