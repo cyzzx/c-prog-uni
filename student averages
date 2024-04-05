@@ -1,0 +1,90 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Student
+{
+    char name[20];
+    char surname[20];
+    int grades[6];
+    double average;
+};
+
+void readData(int n, struct Student y[], FILE *fp)
+{
+    for(int i = 0; i < n; i++)
+    {
+        fscanf(fp, "%s", y[i].name);
+        fscanf(fp, "%s", y[i].surname);
+
+        for(int j = 0; j < 4; j++)
+        {
+            fscanf(fp, "%d", &y[i].grades[j]);
+        }
+
+    }
+}
+
+
+void findAvg(int n, struct Student y[])
+{
+    int sum;
+    for(int i = 0; i < n; i++)
+    {
+        sum = 0;
+        for(int j = 0; j < 4; j++)
+        {
+            sum += y[i].grades[j];
+        }
+        y[i].average = (double) sum / 4;
+    }
+
+}
+void sort(int n, struct Student y[])
+{
+     for(int i = 0; i < n-1; i++)
+     {
+         for(int j = i+1; j < n; j++)
+         {
+             if(y[i].average < y[j].average)
+             {
+                 struct Student temp = y[i];
+                 y[i] = y[j];
+                 y[j] = temp;
+             }
+         }
+     }
+}
+
+void printData(int m, struct Student y[])
+{
+    for(int i = 0; i < m; i++)
+    {
+        printf("%s %s %.2lf\n",y[i].name, y[i].surname, y[i].average);
+    }
+}
+
+int main()
+{
+    FILE *fp;
+    fp = fopen("data.txt", "r");
+    if(fp == NULL)
+    {
+        puts("Cannot open file!");
+        exit(1);
+    }
+
+    int n, m;
+    fscanf(fp, "%d", &n);
+    fscanf(fp, "%d", &m);
+
+    struct Student y[n];
+    readData(n, y, fp);
+    findAvg(n, y);
+    sort(n, y);
+    printData(m, y);
+
+    fclose(fp);
+    return 0;
+
+}
