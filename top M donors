@@ -1,0 +1,75 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Donor
+{
+    char name[20];
+    char surname[20];
+    float donation;
+
+};
+
+void readData(int n, struct Donor y[], FILE *fp)
+{
+    for(int i = 0; i < n; i++)
+    {
+        fscanf(fp, "%s", y[i].name);
+        fscanf(fp, "%s", y[i].surname);
+
+        for(int j = 0; j < 4; j++)
+        {
+            fscanf(fp, "%f", &y[i].donation);
+        }
+
+    }
+}
+
+
+void sort(int n, struct Donor y[])
+{
+     for(int i = 0; i < n-1; i++)
+     {
+         for(int j = i+1; j < n; j++)
+         {
+             if(y[i].donation < y[j].donation)
+             {
+                 struct Donor temp = y[i];
+                 y[i] = y[j];
+                 y[j] = temp;
+             }
+         }
+     }
+}
+
+void printTopMDonors(int m, struct Donor y[])
+{
+    for(int i = 0; i < m; i++)
+    {
+        printf("%s %s %.1f\n",y[i].name, y[i].surname, y[i].donation);
+    }
+}
+
+int main()
+{
+    FILE *fp;
+    fp = fopen("data.txt", "r");
+    if(fp == NULL)
+    {
+        puts("Cannot open file!");
+        exit(1);
+    }
+
+    int n, m;
+    fscanf(fp, "%d", &n);
+    fscanf(fp, "%d", &m);
+
+    struct Donor y[n];
+    readData(n, y, fp);
+    sort(n, y);
+    printTopMDonors(m, y);
+
+    fclose(fp);
+    return 0;
+
+}
