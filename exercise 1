@@ -1,1 +1,25 @@
+#include <stdio.h>
+#include <stdlib.h>
 
+int main()
+{
+    int a, *p;
+    a = 7;
+
+    // print the location of a and p
+    printf("Location of a: %p\nLocation of p: %p\n", &a, &p);
+
+    //print the content of a and p
+    printf("Content of a: %d\nContent of p: %d\n", a, p);
+
+    p = &a;
+
+    //print the value that is pointed by p, the location and content of p
+    printf("Value pointed by p: %d\nLocation of p: %p\nContent of p: %p\n", *p, &p, p);
+
+    //print the address after the address of a and the address after the address of p
+    printf("Address after the address of a: %p\nAddress after the address of p: %p\n", (&a+1), (&p+1));
+
+
+    return 0;
+}
