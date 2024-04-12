@@ -1,0 +1,31 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+int seqChange(int *addrB)
+{
+
+    if(*addrB == 35)
+        *addrB = (*addrB) * 2;
+
+    else
+        *addrB = (*addrB) * 5;
+
+    return *(addrB + 1) + (*addrB+1);
+}
+
+
+int main()
+{
+    int *addrA;
+    int arr[11] = {5, 15, 25, 35, 45, 55, 65, 75, 85, 95, 105};
+
+    addrA = &arr[0];
+
+    int result;
+    result = seqChange(addrA+3)+seqChange(addrA+7);
+    result+=addrA[3]+addrA[7];
+
+    printf("%d", result);
+
+    return 0;
+}
