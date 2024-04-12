@@ -1,1 +1,49 @@
+#include <stdio.h>
+#include <stdlib.h>
 
+void readArray(float arr[], int n)
+{
+    for(int i = 0; i < n; i++)
+    {
+        scanf("%f", &arr[i]);
+    }
+}
+
+
+void max12(float a[], int n, float *max1, float *max2)
+{
+    for(int i = 0; i < n-1; i++)
+    {
+        for(int j = i+1; j < n; j++)
+        {
+            if (a[i] < a[j])
+            {
+                float temp = a[i];
+                a[i] = a[j];
+                a[j] = temp;
+            }
+        }
+    }
+
+    *max1 = a[0];
+    *max2 = a[1];
+}
+
+
+int main()
+{
+
+    int n;
+    scanf("%d", &n);
+
+    float arr[n];
+    float max1, max2;
+    readArray(arr, n);
+
+    max12(arr, n, &max1, &max2);
+
+    printf("Max1 = %f\n", max1);
+    printf("Max2 = %f\n", max2);
+
+    return 0;
+}
