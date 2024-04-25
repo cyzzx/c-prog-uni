@@ -1,0 +1,58 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int ID;
+    float avg;
+
+    struct Node *next;
+};
+
+
+
+int main()
+{
+
+    struct Node *newNode=NULL, *newNode2=NULL, *newNode3, ;
+
+    newNode=(struct Node *)malloc(sizeof(struct Node));
+
+    newNode -> ID = 5;
+
+    newNode -> avg = 2.5;
+
+    newNode ->  next = NULL;
+
+    newNode2=(struct Node *)malloc(sizeof(struct Node));
+
+    newNode2 -> ID = 5;
+
+    newNode2 -> avg = 2.5;
+
+    newNode2 ->  next = NULL;
+
+    newNode -> next = newNode2;
+    
+    newNode3=(struct Node *)malloc(sizeof(struct Node));
+
+    newNode2 -> ID = 60;
+
+    newNode2 -> avg = 7.5;
+
+    newNode2 ->  next = NULL;
+
+    newNode -> next = newNode2;
+
+
+
+
+
+
+
+
+
+
+
+    return 0;
+}
