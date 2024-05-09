@@ -1,0 +1,92 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Node
+{
+    int ID;
+    float avg;
+
+    struct Node *next;
+};
+
+void insertSorted(struct Node **head)
+{
+
+    //create a new node
+    struct Node *newNode;
+    newNode = (struct Node*)malloc(sizeof(struct Node));
+    printf("Enter ID and Average: ");
+    scanf("%d%f", &newNode->ID, &newNode->avg);
+    newNode->next = NULL;
+
+    if(*head == NULL) // access the CONTENT of head not ADDRESS
+    {
+        *head=newNode; // case1; list is empty
+        return;
+    }    
+
+    // case2; add at first
+    if((*head)->ID < newNode->ID) // descending order
+    {
+        newNode->next = *head;
+        *head = newNode;
+    }
+
+    else
+    {
+        struct Node *previous, *current;
+        current = previous = *head;
+
+        while(current!=NULL)
+        {
+            previous = current;
+            current = current->next;
+        }
+
+        // case3; add at last
+        if(current == NULL)
+        {
+            previous->next = newNode;
+        }
+
+        // case4; add at position
+        else
+        {
+            previous->next = newNode;
+            newNode->next;
+        }
+
+    }
+
+
+}
+
+void printList(struct Node *head)
+{
+    while(head!=NULL)
+    {
+        printf("ID: %d, Average: %f \n", head->ID, head->avg);
+        head = head->next;
+    }
+}
+
+int main()
+{
+    struct Node *head = NULL; // avoid random addresses
+    int n;
+    scanf("%d", &n);
+
+    for(int i = 0; i < n; i++)
+    {
+        printf("Enter data for the new Node: \n");
+        insertSorted(&head);
+        printf("\nActual Order: \n");
+        printList(head);
+        printf("\n");
+    }
+
+    printf("\n\nFinal order: \n");
+    printList(head);
+
+    return 0;
+}
