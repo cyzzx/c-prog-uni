@@ -1,1 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
 
+struct Package
+{
+    int code;
+    float weight;
+    char address[50];
+
+    struct Package *next;
+};
+
+struct Stack
+{
+    struct Package *top;
+};
+
+void createPackage(struct Package **newPackage, int code, float weight, char *address)
+{
+    *newPackage = (struct Package*)(malloc(sizeof(struct Package)));
+    (*newPackage)-> code = code;
+    (*newPackage)-> weight = weight;
+    strcpy((*newPackage)->address, address);
+    (*newPackage)-> next = NULL;
+}
+
+void addPackage(struct Stack *s, int code, float weight, char *address)
+{
+    struct Package *newPackage;
+    createPackage(&newPackage, code, weight, address);
+    newPackage->next = s->top;
+    s->top = newPackage;
+
+}
+
+void deliverPackage(struct Stack *s)
+{
+    struct Package *temp = s->top;
+    if(s->top == NULL)
+    {
+        printf("There are no packages in the stack...\n");
+        return;
+    }
+    s->top = s->top->next;
+    free(temp);
+}
+
+void showUndeliveredPackages(struct Stack *s)
+{
+    int count = 0;
+    struct Package *current  = s->top;
+    while(current!=NULL)
+    {
+        printf("Package Code: %d, Weight: %.2f, Address: %s\n", current->code, current->weight, current->address);
+        current = current->next;
+        count++;
+    }
+    printf("There are %d undelivered packages.\n", count);
+}
+
+
+int main()
+{
+    struct Stack stackOfPackages;
+    stackOfPackages.top = NULL; // start of stack no packages
+
+    int code;
+    float weight;
+    char address[50];
+
+    int choice;
+    do
+    {
+        printf("Press 1 to add package, -1 to deliver, 2 to show undelivered orders, 0 to stop\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+        switch(choice)
+        {
+        case 1:
+            printf("Enter code: ");
+            scanf("%d", &code);
+            printf("Enter weight: ");
+            scanf("%f", &weight);
+            printf("Enter address: ");
+            scanf(" %[^\n]%*c", address);
+            addPackage(&stackOfPackages, code, weight, address);
+            break;
+        case -1:
+            deliverPackage(&stackOfPackages);
+            break;
+        case 2:
+            showUndeliveredPackages(&stackOfPackages);
+            break;
+        case 0:
+            printf("Application stopped\n");
+            break;
+        default:
+            printf("Please enter a valid choice\n");
+        }
+
+    } while(choice!=0);
+
+
+    return 0;
+}
