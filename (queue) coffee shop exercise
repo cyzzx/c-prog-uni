@@ -1,0 +1,112 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Order
+{
+    int ID;
+    float price;
+
+    struct Order *next;
+};
+struct Order *front=NULL,*rear=NULL;
+int count=0;
+
+void addOrder(int ID, float price)
+{
+    struct Order *newOrder = (struct Order*)malloc(sizeof(struct Order));
+    newOrder->ID = ID;
+    newOrder->price = price;
+    newOrder->next=NULL;
+
+    if (front == NULL && rear == NULL)
+    {
+        front=rear=newOrder;
+    }
+    else
+    {
+        rear->next=newOrder;
+        rear=rear->next;
+    }
+    count++;
+}
+
+void serveOrder ()
+{
+
+    struct Order *temp = front;
+
+    if (front==NULL)
+    {
+        printf("No orders left to serve!\n");
+    }
+
+    if (front ==rear)
+        front=rear=NULL;
+    else
+    {
+        front=front->next;
+    }
+    free(temp);
+    count--;
+    printf("Order served!\n");
+}
+
+void showOrders ()
+{
+    if(front==NULL)
+    {
+        printf("No orders to display!\n");
+
+    }
+    else
+        {
+        struct Order *temp;
+    temp=front;
+
+    while(temp!=NULL)
+    {
+        printf("Order: ID: %d, price: %.2f\n",temp->ID,temp->price);
+        temp=temp->next;
+    }
+    printf("Number of pending orders: %d\n",count);
+    }
+    }
+
+int main()
+{
+    int ID, choice;
+    float price;
+
+    do
+    {
+        printf("Press 1 to add order, -1 to serve order, 2 to show pending orders, 0 to stop\n");
+        printf("Enter choice: ");
+        scanf("%d", &choice);
+        switch(choice)
+        {
+        case 1:
+            printf("Order ID: ");
+            scanf("%d", &ID);
+            printf("Order price: ");
+            scanf("%f", &price);
+            addOrder(ID, price);
+            break;
+        case 2:
+            showOrders();
+            break;
+        case -1:
+            serveOrder();
+            break;
+        case 0:
+            printf("Application stopped\n");
+            break;
+        default:
+            printf("Please enter a valid choice\n");
+        }
+
+
+
+    } while(choice!=0);
+
+    return 0;
+}
