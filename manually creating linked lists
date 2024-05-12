@@ -42,7 +42,7 @@ int main()
 
     newNode2 ->  next = NULL;
 
-    newNode -> next = newNode2;
+    newNode2 -> next = newNode3;
 
 
 
