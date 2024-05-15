@@ -1,0 +1,73 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Student
+{
+    char name[21];
+    int grades[2];
+    float avg;
+
+    struct Student *next;
+};
+
+float calculateAverages(struct Student *x)
+{
+    float sum = 0.0;
+    for(int i = 0; i < 2; i++)
+    {
+        sum += x->grades[i];
+    }
+
+    x->avg = sum / 2;
+    return x->avg;
+}
+void displayAverages(struct Student *head)
+ {
+    while (head != NULL) 
+    {
+        printf("%s %.1f \n", head->name, head->avg);
+        head = head->next;
+    }
+   
+}
+
+int main()
+{
+    int n;
+    printf("Enter number of students: ");
+    scanf("%d", &n);
+    struct Student *head = NULL;
+    struct Student *temp = NULL;
+
+
+    for(int i = 0; i < n; i++)
+    {
+
+    struct Student *newStudent = NULL;
+    newStudent = (struct Student*) malloc(sizeof(struct Student));
+    scanf("%s", newStudent->name);
+    for(int j = 0; j<2; j++)
+    {
+        scanf("%d", &newStudent->grades[j]);
+    }
+    newStudent->avg = calculateAverages(newStudent);
+    newStudent->next = NULL;
+
+    if (head == NULL)
+    {
+        head = newStudent;
+    }
+
+    else
+    {
+        temp->next = newStudent;
+    }
+
+    temp = newStudent;
+
+    } 
+
+    displayAverages(head);
+
+    return 0;
+}
