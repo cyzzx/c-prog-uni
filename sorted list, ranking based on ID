@@ -53,7 +53,7 @@ void insertSorted(struct Node **head)
         else
         {
             previous->next = newNode;
-            newNode->next;
+            newNode->next = current;
         }
 
     }
