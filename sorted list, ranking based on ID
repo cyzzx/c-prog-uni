@@ -37,7 +37,7 @@ void insertSorted(struct Node **head)
         struct Node *previous, *current;
         current = previous = *head;
 
-        while(current!=NULL)
+        while(current!=NULL && newNode->ID < current->ID)
         {
             previous = current;
             current = current->next;
