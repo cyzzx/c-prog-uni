@@ -1,0 +1,106 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include "shapes.h"
+
+int main(int argc, char *argv[])
+{
+    if (argc < 2)
+    {
+        printf("Invalid number of arguments...in use of application %s", argv[0]);
+        return 1;
+    }
+
+    int nrOfShapes = atoi(argv[1]);
+    for(int i = 0; i < nrOfShapes; i++)
+    {
+        printf("Please enter a shape: \n");
+        printf("1.Triangle\n2.Circle\n3.Cube\n4.Sphere\n5.Cone\n");
+        int shapeID;
+        scanf("%d", &shapeID);
+        switch(shapeID)
+        {
+
+        case TRIANGLE:
+            {
+                float base, height;
+                printf("Please enter the base and height... ");
+                scanf("%f %f", &base, &height);
+                float area = CALCULATE_TRIANGLE_AREA(base, height);
+                printf("Area of triangle is: %f\n", area);
+                break;
+            }
+        case CIRCLE:
+            {
+                float radius;
+                printf("Please enter the radius... ");
+                scanf("%f", &radius);
+                float area = CALCULATE_CIRCLE_AREA(radius);
+                printf("Area of circle is: %f\n", area);
+                break;
+            }
+        case CUBE:
+            {
+                float side;
+                printf("Please enter the side... ");
+                scanf("%f", &side);
+                float area = CALCULATE_CUBE_AREA(side);
+                printf("Area of cube is: %f\n", area);
+                break;
+            }
+        case SPHERE:
+            {
+                float radius;
+                printf("Please enter the radius... ");
+                scanf("%f", &radius);
+                float area = CALCULATE_SPHERE_AREA(radius);
+                printf("Area of sphere is: %f\n", area);
+                break;
+            }
+        case CONE:
+            {
+                float radius, slant;
+                printf("Please enter the base and height...");
+                scanf("%f %f", &radius, &slant);
+                float area = CALCULATE_CONE_AREA(radius, slant);
+                printf("Area of cone is: %f\n", area);
+                break;
+            }
+
+        default:
+            {
+                printf("Invalid shape ID....");
+            }
+        }
+
+
+
+    }
+
+   return 0;
+}
+ /*** header file
+
+#ifndef SHAPES_H_INCLUDED
+#define SHAPES_H_INCLUDED
+
+#include <stdlib.h>
+#include <stdio.h>
+#include <math.h>
+
+#define PI 3.14
+#define TRIANGLE 1
+#define CIRCLE 2
+#define CUBE 3
+#define SPHERE 4
+#define CONE 5
+
+#define CALCULATE_TRIANGLE_AREA(base, height)((base) * (height) *0.5f)
+#define CALCULATE_CIRCLE_AREA(radius)(PI * (radius) * (radius))
+#define CALCULATE_CUBE_AREA(side)(6 * (side) * (side))
+#define CALCULATE_SPHERE_AREA(radius)(4 * PI * (radius) * (radius))
+#define CALCULATE_CONE_AREA(radius, slant)(PI * (radius)*((radius) + (slant)))
+
+
+
+#endif // SHAPES_H_INCLUDED
+***/
