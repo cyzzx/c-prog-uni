@@ -1,0 +1,108 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Student
+{
+    char name[25];
+    char surname[25];
+    char department[5];
+    float gpa1;
+    float gpa2;
+    float gpa3;
+    float cgpa;
+    int status;
+
+    struct Student *next;
+
+};
+
+
+void createStudentList(struct Student **head, FILE *fp1)
+{
+    struct Student *newStudent = NULL;
+    struct Student *temp = *head;
+
+    newStudent = (struct Student *)malloc(sizeof(struct Student));
+    fscanf(fp1, "%s %s %s %f %f %f", newStudent->name, newStudent->surname, newStudent->department, &newStudent->gpa1, &newStudent->gpa2, &newStudent->gpa3);
+    newStudent->cgpa = (newStudent->gpa1 + newStudent->gpa2 + newStudent->gpa3) / 3;
+    if (newStudent->cgpa >= 2.8)
+    {
+        newStudent->status = 1;
+    }
+    else
+    {
+        newStudent->status = 0;
+    }
+    newStudent->next = NULL;
+
+    if(*head ==  NULL)
+    {
+        *head = newStudent;
+    }
+
+    else
+    {
+
+        while(temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = newStudent;
+
+    }
+}
+
+
+void findStudents(struct Student *head, char dep[5], int gpaStatus, FILE *fp2)
+{
+    struct Student *temp = head;
+    while(temp != NULL)
+    {
+        if (temp->status == gpaStatus && (strcmp(temp->department, dep)== 0))
+        {
+            fprintf(fp2, "%s %s %s %.2f\n", temp->name, temp->surname, temp->department, temp->cgpa);
+        }
+        temp = temp->next;
+    }
+}
+
+int main(int argc, char *argv[])
+{
+    if (argc != 5)
+    {
+        printf("Incorrect number of arguments...");
+        return 0;
+    }
+
+    FILE *fp1, *fp2;
+    fp1 = fopen(argv[1], "r" );
+    fp2 = fopen(argv[2], "w");
+    if(fp1 == NULL || fp2 == NULL)
+    {
+        printf("Error opening files...\n");
+        return 1;
+    }
+
+    int gpaStatus = atoi(argv[4]);
+    int n;
+    fscanf(fp1, "%d", &n);
+
+    struct Student *head = NULL;
+    for(int i = 0; i < n; i++)
+    {
+        createStudentList(&head, fp1);
+    }
+
+    char dep[5];
+    strcpy(dep, argv[3]);
+    findStudents(head, dep, gpaStatus, fp2);
+    printf("Output file has been updated...");
+
+
+    fclose(fp1);
+    fclose(fp2);
+
+    return 0;
+
+}
