@@ -1,0 +1,44 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+
+
+int main(int argc,char*argv[])
+{
+   if (argc<3)
+   {
+    printf("Invalid number of arguments for app %s",argv[0]);
+    return 1;
+   }
+
+     FILE *inputFile = fopen(argv[1],"r");
+
+     if (inputFile == NULL)
+     {
+         printf("Cannot open input file!");
+         return 1;
+     }
+
+     FILE *outputFile = fopen(argv[2],"w");
+
+     if(outputFile == NULL)
+     {
+         printf("Cannot open output file!");
+         return 1;
+     }
+
+     int ch;
+
+     while ((ch=fgetc(inputFile)) != EOF)
+     {
+         fputc(ch, outputFile);
+
+     }
+
+     fclose (inputFile);
+     fclose(outputFile);
+
+     printf("Content coppied from file input to file output!");
+
+
+    return 0;
