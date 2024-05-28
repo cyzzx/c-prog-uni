@@ -1,0 +1,87 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
+struct Donor
+{
+    char name[21];
+    char surname[21];
+    float donation;
+
+    struct Donor *next;
+
+};
+
+void insertSorted(struct Donor **head)
+{
+    struct Donor *newDonor = NULL;
+    newDonor = (struct Donor *)malloc(sizeof(struct Donor));
+    scanf("%s %s %f", newDonor->name, newDonor->surname, &newDonor->donation);
+    newDonor->next = NULL;
+
+    if ((*head) == NULL)
+    {
+        *head = newDonor;
+        return;
+    }
+
+    if((*head)->donation < newDonor->donation)
+    {
+        newDonor->next = *head;
+        *head = newDonor;
+    }
+
+    else
+    {
+        struct Donor *previous, *current;
+        current = previous = *head;
+
+        while(current != NULL && newDonor->donation < current->donation)
+        {
+            previous = current;
+            current = current->next;
+        }
+
+        if (current == NULL)
+        {
+            previous->next = newDonor;
+        }
+
+        else
+        {
+            previous->next = newDonor;
+            newDonor->next = current;
+        }
+
+
+    }
+
+
+}
+
+void printTopNList(struct Donor *head, int n)
+{
+    printf("\n");
+    for(int i = 0; i < n; i++)
+    {
+        printf("%s %s %.2f\n", head->name, head->surname, head->donation);
+        head = head->next;
+    }
+}
+
+int main()
+{
+    int m, n;
+    scanf("%d %d", &m, &n);
+
+    struct Donor *head = NULL;
+    for(int i = 0; i < m; i++)
+    {
+        insertSorted(&head);
+    }
+    
+    printTopNList(head, n);
+
+    return 0;
+
+}
