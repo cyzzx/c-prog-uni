@@ -1,152 +1,132 @@
 #include <stdio.h>
 #include <stdlib.h>
-#include <string.h>
 
 struct Employee
-{
-    int ID;
+{   
+    float ID;
     float rating;
 
     struct Employee *next;
+
 };
 
-void displayList(struct Employee *head)
+void createList(struct Employee **head, int n)
 {
-    printf("The current list: \n");
-    struct Employee *temp = head;
-    while(temp != NULL)
+    for(int i = 0; i < n; i++)
     {
-        printf("%d %.2f\n", temp->ID, temp->rating);
-        temp = temp->next;
-    }
-}
 
-void createList(FILE *fp1, struct Employee **head)
-{
-    struct Employee *temp = *head;
-    struct Employee *newEmployee = NULL;
-    newEmployee = (struct Employee *)malloc(sizeof(struct Employee));
-    fscanf(fp1, "%d %f", &newEmployee->ID, &newEmployee->rating);
-    newEmployee->next = NULL;
+    
+        struct Employee *newEmployee = NULL;
+        struct Employee *temp  = *head;
+        newEmployee = (struct Employee *)malloc(sizeof(struct Employee));
+        scanf("%f %f", &newEmployee->ID, &newEmployee->rating);
+        newEmployee->next = NULL;
 
-    if(*head == NULL)
-    {
-        *head = newEmployee;
-    }
-
-    else
-    {
-        while(temp->next != NULL)
+        if(*head == NULL)
         {
-            temp = temp->next;
+            *head = newEmployee;
         }
 
-        temp->next = newEmployee; 
-    }
+        else
+        {
+            while(temp->next != NULL)
+            {
+                temp = temp->next;
+            }
 
+            temp->next = newEmployee;
+        }
+    }
 }
 
-struct Employee* maxRating(struct Employee *head)
+struct Employee* maxRating(struct Employee *temp)
 {
-    if(head == NULL)
-    {
-        return NULL;
-    }
-    
-    struct Employee *temp = head;
-    struct Employee *maxEmployee = head;
+    float max = temp->rating;
+    struct Employee *maxEmployee =NULL;
+
     while(temp != NULL)
     {
-        if (temp->rating > maxEmployee->rating)
+        if (temp->rating > max)
         {
+            max = temp->rating;
             maxEmployee = temp;
         }
-
         temp = temp->next;
     }
 
     return maxEmployee;
 }
 
-void deleteEmployeeWithID(struct Employee **head, int id)
+void deleteEmployeeWithID(struct Employee **head, float id)
 {
     struct Employee *temp = *head;
     struct Employee *prev = NULL;
-    if(temp != NULL && temp->ID == id) //if head needs to be deleted
-    {
+    struct Employee *toDelete = NULL;
+    if(temp->ID == id)
+    {   
+        toDelete = *head;
         *head = temp->next;
+        free(toDelete);
+    }
+
+    else
+    {
+        while(temp != NULL && temp->ID != id)
+        {
+            prev = temp;
+            temp = temp->next;
+        }
+        
+        if(temp == NULL)
+        {
+            printf("Employee was not found...");
+            return;
+        }
+
+        prev->next = temp->next;
         free(temp);
-        return;
+       
     }
-
-    while(temp != NULL && temp->ID != id) //search for employee to be deleted
-    {
-        prev = temp;
-        temp = temp->next;
-    }
-
-    if (temp == NULL)
-    {
-        printf("Employee was not found...\n");
-    }
-
-    prev->next = temp->next;
-    free(temp);
-
 }
 
 void deleteFirstEmployee(struct Employee **head)
 {
     struct Employee *toDelete = NULL;
-    if(*head == NULL)
-    {
-        return;
-    }
-
     toDelete = *head;
     *head = (*head)->next;
     free(toDelete);
+    
+}
+
+void displayList(struct Employee *temp)
+{
+    printf("\n");
+    while(temp != NULL)
+    {
+        printf("%.0f %.2f\n", temp->ID, temp->rating);
+        temp = temp->next;
+    }
 }
 
 int main()
 {
-
-
-    FILE *fp1 = NULL;
-    FILE *fp2 = NULL;
-    fp1 = fopen("input.txt", "r");
-    fp2 = fopen("output.txt", "w");
-
     int nrOfEmployees;
-    fscanf(fp1, "%d", &nrOfEmployees);
+    scanf("%d", &nrOfEmployees);
 
     struct Employee *head = NULL;
-    for(int i = 0; i < nrOfEmployees; i++)
-    {
-        createList(fp1, &head);
-    }
-    
-    printf("Enter a choice: ");
+    createList(&head, nrOfEmployees);
+
     int choice;
+    printf("Choose an option: ");
     scanf("%d", &choice);
 
     switch(choice)
     {
-        case 0: 
-            break;
         case 1:
         {
-            struct Employee *maximumEmployee = maxRating(head);
-            if(maximumEmployee != NULL)
-            {
-                fprintf(fp2, "The highest rating is: %.2f", maximumEmployee->rating);
-                printf("Max rating has been printed on output file...\n");
-            }
-            
-            else
-            {
-                fprintf(fp2, "No Employees found..\n");
-            }
+            printf("Employees with the highest rating: ");
+            struct Employee *maxEmp = maxRating(head);
+            printf("%.0f %.1f", maxEmp->ID, maxEmp->rating);
             break;
         }
         case 2:
@@ -155,23 +135,21 @@ int main()
             displayList(head);
             break;
         }
+        
         case 3:
-           {
-
-            int id;
-            printf("Please enter an ID: ");
-            scanf("%d", &id);
+        {
+            float id;
+            printf("Choose ID to delete from the list: ");
+            scanf("%f", &id);
             deleteEmployeeWithID(&head, id);
             displayList(head);
             break;
-           }
-        case 4:
-            displayList(head);
+        }
+
+        case 0:
+        break;
+
     }
 
-    fclose(fp1);
-    fclose(fp2);
-
     return 0;
-
 }
