@@ -8,69 +8,80 @@ struct Order
 
     struct Order *next;
 };
-struct Order *front=NULL,*rear=NULL;
-int count=0;
 
-void addOrder(int ID, float price)
+struct Order *front = NULL, *rear = NULL;
+int count = 0;
+
+void addOrder(int id, float price)
 {
-    struct Order *newOrder = (struct Order*)malloc(sizeof(struct Order));
-    newOrder->ID = ID;
+    struct Order *newOrder = NULL;
+    newOrder = (struct Order *)malloc(sizeof(struct Order));
+    newOrder->ID = id;
     newOrder->price = price;
-    newOrder->next=NULL;
+    newOrder->next = NULL;
 
     if (front == NULL && rear == NULL)
     {
-        front=rear=newOrder;
-    }
+        front = rear = newOrder;
+    } 
+
     else
     {
-        rear->next=newOrder;
+        rear->next = newOrder;
         rear=rear->next;
     }
+
     count++;
 }
 
-void serveOrder ()
+void serveOrder()
 {
-
     struct Order *temp = front;
-
-    if (front==NULL)
+    
+    if(front == NULL)
     {
-        printf("No orders left to serve!\n");
+        printf("No more orders left to serve...\n");
     }
 
-    if (front ==rear)
-        front=rear=NULL;
+    if (front == rear)
+    {
+        front = rear = NULL;
+    }
+
     else
     {
-        front=front->next;
+        front = front->next;
+        free(temp);
+        count--;
+        printf("Order served! \n");
     }
-    free(temp);
-    count--;
-    printf("Order served!\n");
+
+    
 }
 
-void showOrders ()
+
+void showOrders()
 {
-    if(front==NULL)
+    if(front == NULL)
     {
-        printf("No orders to display!\n");
-
+        printf("No orders to display...");
     }
+
     else
-        {
-        struct Order *temp;
-    temp=front;
-
-    while(temp!=NULL)
     {
-        printf("Order: ID: %d, price: %.2f\n",temp->ID,temp->price);
-        temp=temp->next;
+        struct Order *temp;
+        temp = front;
+
+        while(temp != NULL)
+        {
+            printf("Order: \n  ID: %d, Price: %.2f\n", temp->ID, temp->price);
+            temp = temp->next;
+        }
+
+        printf("Number of pending orders: %d\n", count);
     }
-    printf("Number of pending orders: %d\n",count);
-    }
-    }
+}
+
 
 int main()
 {
@@ -79,34 +90,35 @@ int main()
 
     do
     {
-        printf("Press 1 to add order, -1 to serve order, 2 to show pending orders, 0 to stop\n");
+        printf("Press 1 to add order, -1 to serve order and 2 to show pending orders, 0 to stop\n");
         printf("Enter choice: ");
         scanf("%d", &choice);
+
         switch(choice)
         {
-        case 1:
-            printf("Order ID: ");
-            scanf("%d", &ID);
-            printf("Order price: ");
-            scanf("%f", &price);
-            addOrder(ID, price);
-            break;
-        case 2:
-            showOrders();
-            break;
-        case -1:
-            serveOrder();
-            break;
-        case 0:
-            printf("Application stopped\n");
-            break;
-        default:
-            printf("Please enter a valid choice\n");
+            case 1:
+                printf("Order ID: ");
+                scanf("%d", &ID);
+                printf("Order price: ");
+                scanf("%f", &price);
+                addOrder(ID, price);
+                break;
+
+            case 2:
+                showOrders();
+                break;
+
+            case -1:
+                serveOrder();
+                break;
+            case 0:
+                printf("Application has stopped...\n");
+                break;
+            default:
+                printf("Please enter a valid choice...\n");
         }
-
-
-
-    } while(choice!=0);
+    } while(choice != 0);
 
     return 0;
+    
 }
