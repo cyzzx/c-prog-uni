@@ -1,0 +1,102 @@
+#include <stdio.h>
+#include <stdlib.h>
+
+struct Student
+{
+    char name[21];
+    char surname[21];
+    int grades[4];
+    float avg;
+
+    struct Student *next;
+};
+
+void createStudentList(struct Student **head)
+{
+    struct Student *newStudent = NULL;
+    struct Student *temp = *head;
+    int sum = 0;
+    newStudent = (struct Student *)malloc(sizeof(struct Student));
+    scanf("%s %s", newStudent->name, newStudent->surname);
+    for(int j = 0; j < 4; j++)
+    {
+        scanf("%d", &newStudent->grades[j]);
+        sum += newStudent->grades[j];
+    }
+
+    newStudent->avg = sum / 4.0;
+    newStudent->next = NULL;
+
+    if(*head == NULL)
+    {
+        *head = newStudent;
+    }
+
+    else
+    {
+        while(temp->next != NULL)
+        {
+            temp = temp->next;
+        }
+        temp->next = newStudent;
+    }
+
+}
+
+void sortList(struct Student **head)
+{
+    struct Student *sorted = NULL;
+
+    while (*head != NULL)
+    {
+        struct Student *current = *head;
+        *head = (*head)->next;
+
+        if (sorted == NULL || sorted->avg < current->avg)
+        {
+            current->next = sorted;
+            sorted = current;
+        }
+        else
+        {
+            struct Student *temp = sorted;
+            while (temp->next != NULL && temp->next->avg >= current->avg)
+            {
+                temp = temp->next;
+            }
+            current->next = temp->next;
+            temp->next = current;
+        }
+    }
+
+    *head = sorted;
+}
+
+
+void printList(struct Student *temp, int m)
+{
+    for(int i = 0; i < m; i++)
+    {
+        printf("%s %s %.2f\n", temp->name, temp->surname, temp->avg);
+        temp = temp->next;
+    }
+}
+
+
+int main()
+{
+    int n, m;
+    scanf("%d %d", &n, &m);
+
+    struct Student *head = NULL;
+    
+    for(int i = 0; i < n; i++)
+    {
+        createStudentList(&head);
+    }
+     
+    sortList(&head);
+    printList(head, m);
+
+    return 0;
+}
